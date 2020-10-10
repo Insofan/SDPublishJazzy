@@ -12,6 +12,7 @@ const token = core.getInput("personal_access_token");
 
 const remote = `https://${token}@github.com/${context.repo.owner}/${repoName}.git`;
 const docRemote = `https://${token}@github.com/SDWebImage/sdwebimage.github.io.git`;
+const docRepoName = "sdwebimage.github.io";
 
 const installJazzy = () => {
   let str = "sudo gem install jazzy";
@@ -30,7 +31,6 @@ const genJazzy = (ver) => {
 };
 
 const mkdirs = () => {
-  let docRepoName = "sdwebimage.github.io";
   shell.exec(`mkdir ../${repoName}`);
   shell.exec(`mkdir ../${docRepoName}`);
 };
