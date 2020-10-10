@@ -1,10 +1,10 @@
 const core = require("@actions/core");
-const github = require("actions-toolkit");
+const toolkit = require("actions-toolkit");
 const shell = require("shelljs");
 const yaml = require("js-yaml");
 const fs = require("fs");
 
-const context = github.context;
+const context = toolkit.context;
 
 const branch = "docs";
 
