@@ -2,13 +2,10 @@ name: "SD Publish Jazzy Docs"
 description: "Generate Swift/Objective-C documentation with Jazzy"
 
 inputs:
-  config:
-    description: "Path to .jazzy.yml file - preferred"
+  config_path:
+    description: "Path to .jazzy.yml file"
     required: false
-  args:
-    description: "Arguments to pass to Jazzy"
-    required: false
-  version:
+  jazzy_version:
     description: "Jazzy Version"
     required: false
   personal_access_token:
