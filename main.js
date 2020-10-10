@@ -5,7 +5,7 @@ const shell = require("shelljs");
 // const fs = require("fs");
 
 const context = github.context;
-const repoName = ontext.repo.repo;
+const repoName = context.repo.repo;
 
 // const branch = "docs";
 
