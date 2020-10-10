@@ -51,13 +51,13 @@ const execute = () => {
   shell.exec(genJazzy(ver));
 
   // wait for del
-  shell.exec(`cd ../${docRepoName}`);
+  shell.cd(`../${docRepoName}`)
   shell.exec("git checkout -b action origin/action");
-  shell.exec(`cd ../${repoName}`);
+  shell.cd(`../${repoName}`)
 
   shell.exec(`rm -rf ../${docRepoName}/${repoName}`);
   shell.exec(`cp -r ../${repoName} ../${docRepoName}/.`);
-  shell.exec(`cd ../${docRepoName}`);
+  shell.cd(`../${docRepoName}`)
   shell.exec("git add .");
   shell.exec(`git commit -m 'update: ${repoName} ${ver}'`);
   shell.exec(`git push`);
