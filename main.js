@@ -1,5 +1,5 @@
 const core = require("@actions/core");
-const github = require("@actions/github");
+const github = require("actions-toolkit");
 const shell = require("shelljs");
 const yaml = require("js-yaml");
 const fs = require("fs");
@@ -24,16 +24,17 @@ const installJazzy = () => {
   return str;
 };
 
-const genJazzy = () => {
+const genJazzy = (ver) => {
   if (configPath) {
-    return "jazzy --config .jazzy.yaml";
+    return `jazzy --config .jazzy.yaml --module-version ${ver}`;
   }
   return "jazzy";
 };
 
 const execute = () => {
   shell.exec(installJazzy());
-  shell.exec(genJazzy());
+  ver = shell.exec("git tag -l --sort -version:refname | head -n 1");
+  shell.exec(genJazzy(ver));
 };
 
 try {
