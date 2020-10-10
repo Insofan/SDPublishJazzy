@@ -15,7 +15,7 @@ const jazzyVersion = core.getInput("jazzy_version");
 const token = core.getInput("personal_access_token");
 
 const remote = `https://${token}@github.com/${context.repo.owner}/${repoName}.git`;
-const docRemote = `https://${token}@github.com/SDWebImage/sdwebimage.github.io.git.git`;
+const docRemote = `https://${token}@github.com/SDWebImage/sdwebimage.github.io.git`;
 
 const installJazzy = () => {
   let str = "sudo gem install jazzy";
