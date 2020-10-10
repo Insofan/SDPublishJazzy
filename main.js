@@ -15,6 +15,7 @@ const jazzyVersion = core.getInput("jazzy_version");
 const token = core.getInput("personal_access_token");
 
 const remote = `https://${token}@github.com/${context.repo.owner}/${repoName}.git`;
+const docRemote = `https://${token}@github.com/SDWebImage/sdwebimage.github.io.git.git`;
 
 const installJazzy = () => {
   let str = "sudo gem install jazzy";
@@ -37,17 +38,19 @@ const execute = () => {
   shell.exec(`mkdir ../${repoName}`);
   shell.exec(`mkdir ../${docRepoName}`)
 
+  //   config git
+  shell.exec(`git config user.name ${context.actor}`)
+  shell.exec(`git config user.email ${context.actor}@users.noreply.github.com`)
+  shell.exec(`git clone ${docRemote} ../${docRepoName}`)
+
   shell.exec(installJazzy());
   ver = shell.exec("git tag -l --sort -version:refname | head -n 1");
   shell.exec(genJazzy(ver));
 
-//   config git
-    shell.exec(`git config user.name ${context.actor}`)
-    shell.exec(`git config user.email ${context.actor}@users.noreply.github.com`)
-    shell.exec(`git clone git@github.com:SDWebImage/sdwebimage.github.io.git ../${docRepoName}`)
-
 // wait for del
+    shell.exec(`cd ../${docRepoName}`)
     shell.exec("git checkout -b action origin/action")
+    shell.exec(`cd ../${repoName}`)
 
     shell.exec(`rm -rf ../${docRepoName}/${repoName}`)
     shell.exec(`cp ../${repoName} ../${docRepoName}/.`)
