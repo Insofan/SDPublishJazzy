@@ -1,13 +1,9 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 const shell = require("shelljs");
-// const yaml = require("js-yaml");
-// const fs = require("fs");
 
 const context = github.context;
 const repoName = context.repo.repo;
-
-// const branch = "docs";
 
 // User defined input
 const configPath = core.getInput("config_path");
@@ -33,32 +29,38 @@ const genJazzy = (ver) => {
   return "jazzy";
 };
 
-const execute = () => {
-  let docRepoName = "sdwebimage.github.io"
+const mkdirs = () => {
+  let docRepoName = "sdwebimage.github.io";
   shell.exec(`mkdir ../${repoName}`);
-  shell.exec(`mkdir ../${docRepoName}`)
+  shell.exec(`mkdir ../${docRepoName}`);
+};
 
+const setGit = () => {
   //   config git
-  shell.exec(`git config user.name ${context.actor}`)
-  shell.exec(`git config user.email ${context.actor}@users.noreply.github.com`)
-  shell.exec(`git clone ${docRemote} ../${docRepoName}`)
+  shell.exec(`git config user.name ${context.actor}`);
+  shell.exec(`git config user.email ${context.actor}@users.noreply.github.com`);
+  shell.exec(`git clone ${docRemote} ../${docRepoName}`);
+};
+
+const execute = () => {
+  mkdirs();
+  setGit();
 
   shell.exec(installJazzy());
   ver = shell.exec("git tag -l --sort -version:refname | head -n 1");
   shell.exec(genJazzy(ver));
 
-// wait for del
-    shell.exec(`cd ../${docRepoName}`)
-    shell.exec("git checkout -b action origin/action")
-    shell.exec(`cd ../${repoName}`)
+  // wait for del
+  shell.exec(`cd ../${docRepoName}`);
+  shell.exec("git checkout -b action origin/action");
+  shell.exec(`cd ../${repoName}`);
 
-    shell.exec(`rm -rf ../${docRepoName}/${repoName}`)
-    shell.exec(`cp ../${repoName} ../${docRepoName}/.`)
-    shell.exec(`cd ../${docRepoName}`)
-    shell.exec("git add .")
-    shell.exec(`git commit -m 'update: ${repoName} ${ver}'`)
-    shell.exec(`git push --force origin master:action`)
-
+  shell.exec(`rm -rf ../${docRepoName}/${repoName}`);
+  shell.exec(`cp -r ../${repoName} ../${docRepoName}/.`);
+  shell.exec(`cd ../${docRepoName}`);
+  shell.exec("git add .");
+  shell.exec(`git commit -m 'update: ${repoName} ${ver}'`);
+  shell.exec(`git push`);
 };
 
 try {
